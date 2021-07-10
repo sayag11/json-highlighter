@@ -1,6 +1,6 @@
 {
   "name": "react-json-highlighter",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A component to highlight values in JSON text",
   "main": "index.js",
   "author": "Yehonatan Sayag",
