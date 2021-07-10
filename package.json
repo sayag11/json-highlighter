@@ -2,7 +2,7 @@
   "name": "react-json-highlighter",
   "version": "1.0.4",
   "description": "A component to highlight values in JSON text",
-  "main": "src/JsonHighlighter.js",
+  "main": "index.js",
   "author": "Yehonatan Sayag",
   "license": "MIT",
   "private": false,
