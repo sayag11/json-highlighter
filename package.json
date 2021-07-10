@@ -2,13 +2,19 @@
   "name": "react-json-highlighter",
   "version": "1.0.2",
   "description": "A component to highlight values in JSON text",
-  "main": "JsonHighlighter.js",
+  "main": "src/JsonHighlighter.js",
   "author": "Yehonatan Sayag",
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-react": "^7.14.5",
+    "babel-loader": "^8.2.2",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
-    "react-highlight-words": "^0.17.0"
+    "react-highlight-words": "^0.17.0",
+    "webpack": "^5.44.0",
+    "webpack-cli": "^4.7.2"
   }
 }
