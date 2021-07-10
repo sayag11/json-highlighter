@@ -1,0 +1,14 @@
+{
+  "name": "JsonHighlighter",
+  "version": "1.0.0",
+  "description": "A component to highlight values in JSON text",
+  "main": "JsonHighlighter.js",
+  "author": "Yehonatan Sayag",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-highlight-words": "^0.17.0"
+  }
+}
