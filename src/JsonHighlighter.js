@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react';
 import {get} from 'lodash';
 import Highlighter from 'react-highlight-words';
-import {colors, hexToRGBA} from '@xm/style';
 import {
 	replacePathsWithMarkers,
 	findChunks,
@@ -51,9 +50,6 @@ const JsonHighlighter = ({json = {}, space, paths = [], ...restProps}) => {
 		<Highlighter
 			textToHighlight={textToHighlight}
 			searchWords={searchWords}
-			highlightStyle={{
-				backgroundColor: hexToRGBA(colors.shamrock, 0.5),
-			}}
 			findChunks={findChunks(space, jsonObjWithMarkers)}
 			{...restProps}
 		/>
