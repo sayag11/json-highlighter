@@ -1,32 +1,20 @@
 const path = require('path');
 
 module.exports = {
+    target: 'web',
     entry: './src/lib/index.js',
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
+    resolve: {
+        extensions: [ '.js', '.json' ],
+    },
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
-            },
-            {
-                test: /\.(png|svg|jpg)$/,
-                use: [
-                    'file-loader',
-                ],
-            },
-            {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
+                test: /\.js?$/,
+                use: 'babel-loader',
                 exclude: /node_modules/,
             },
         ]
-    },
-    resolve: {
-        extensions: [ '.tsx', '.ts', '.js' ],
     },
     output: {
         filename: 'bundle.js',
