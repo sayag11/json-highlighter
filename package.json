@@ -1,6 +1,6 @@
 {
   "name": "json-highlighter",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "A component to highlight values in JSON text",
   "main": "src/lib/JsonHighlighter.js",
   "author": "Yehonatan Sayag",
