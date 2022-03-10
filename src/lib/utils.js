@@ -1,4 +1,4 @@
-import {cloneDeep, set} from "lodash";
+import {cloneDeep, set} from 'lodash';
 const MARKER = '__marker__';
 
 // sanitize function, returns the stringified json with no spaces
@@ -27,6 +27,38 @@ const findEndIndex = (str, sw, startIndex, sanitize) => {
     return i;
 };
 
+export const parseJson = json => {
+    if (typeof json === 'object') return json;
+    if (typeof json === 'string') {
+        try {
+            return JSON.parse(json);
+        }
+        catch (e) {
+            return json;
+        }
+    }
+};
+
+/**
+ *
+ * @param obj - an object
+ * @returns array of  the object's keys including deep nested
+ * https://stackoverflow.com/a/42674656
+ */
+export const getDeepKeys = obj => {
+    let keys = [];
+    for (let key in obj) {
+        keys.push(key);
+        if (typeof obj[key] === "object") {
+            let subkeys = getDeepKeys(obj[key]);
+            keys = keys.concat(subkeys.map(function(subkey) {
+                return key + "." + subkey;
+            }));
+        }
+    }
+    return keys;
+};
+
 /**
  * @param space - the space parameter for JSON.stringify
  * @param jsonWithMarkers - the json object with a marker placeholder inside json[path]
@@ -51,8 +83,9 @@ export const findChunks = (space, jsonWithMarkers) => ({searchWords}) => {
                 start: startIndex,
                 end: endIndex,
             });
-        } else {
-            console.error(`JsonHighlighter: search word ${sw} was not found in text`)
+        }
+        else {
+            console.error(`JsonHighlighter: search word ${sw} was not found in text`);
         }
     });
     return chunks;
