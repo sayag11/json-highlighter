@@ -17,8 +17,6 @@ var _lodash = require("lodash");
 
 var _reactHighlightWords = _interopRequireDefault(require("react-highlight-words"));
 
-var _style = require("@xm/style");
-
 var _utils = require("./utils");
 
 const _excluded = ["json", "space", "paths"];
@@ -67,9 +65,6 @@ const JsonHighlighter = _ref => {
   return /*#__PURE__*/_react.default.createElement(_reactHighlightWords.default, _extends({
     textToHighlight: textToHighlight,
     searchWords: searchWords,
-    highlightStyle: {
-      backgroundColor: (0, _style.hexToRGBA)(_style.colors.shamrock, 0.5)
-    },
     findChunks: (0, _utils.findChunks)(space, jsonObjWithMarkers)
   }, restProps));
 };
