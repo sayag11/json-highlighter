@@ -45,7 +45,7 @@ export const parseJson = json => {
  * @returns array of  the object's keys including deep nested
  * https://stackoverflow.com/a/42674656
  */
-export const getDeepKeys = obj => {
+const getDeepKeys = obj => {
     let keys = [];
     for (let key in obj) {
         keys.push(key);
@@ -57,6 +57,19 @@ export const getDeepKeys = obj => {
         }
     }
     return keys;
+};
+
+export const getSortedPaths = (jsonObj, paths) => {
+    const deepKeys = getDeepKeys(jsonObj); // get all deep keys from object (dot notation)
+
+    const formattedPaths = paths.map(path => path.replace(/\[([^\]]+)\]/g, '.$1'));
+
+    const allKeysExist = formattedPaths.every(path => deepKeys.includes(path));
+    if (!allKeysExist) {
+        throw Error("JsonHighlighter error - paths contains a path that does not exist in the object");
+    }
+
+    return formattedPaths.slice().sort((a, b) => deepKeys.indexOf(a) - deepKeys.indexOf(b));
 };
 
 /**

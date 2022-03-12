@@ -5,7 +5,7 @@ import {
 	replacePathsWithMarkers,
 	findChunks,
 	parseJson,
-	getDeepKeys,
+	getSortedPaths,
 } from './utils';
 
 /*
@@ -25,25 +25,22 @@ const JsonHighlighter = ({json = {}, space, paths = [], ...restProps}) => {
 	);
 
 	// sort the paths to be in the same order they appear in the json object
-	const orderedPaths = useMemo(() => {
-		const deepKeys = getDeepKeys(parsedJSON);
-		return paths.slice().sort((a, b) => deepKeys.indexOf(a) - deepKeys.indexOf(b));
-	}, [paths, parsedJSON]);
+	const sortedPaths = useMemo(() => getSortedPaths(parsedJSON, paths), [paths, parsedJSON]);
 
 	// replace the values in the provided paths with a marker placeholder
 	const jsonObjWithMarkers = useMemo(
-		() => (typeof parsedJSON === 'object' ? replacePathsWithMarkers(parsedJSON, orderedPaths) : {}),
-		[parsedJSON, orderedPaths],
+		() => (typeof parsedJSON === 'object' ? replacePathsWithMarkers(parsedJSON, sortedPaths) : {}),
+		[parsedJSON, sortedPaths],
 	);
 	// extract the search words from the paths in the json object
 	const searchWords = useMemo(
 		() =>
 			typeof parsedJSON === 'object'
-				? orderedPaths.map(path => {
+				? sortedPaths.map(path => {
 					return JSON.stringify(get(parsedJSON, path));
 				})
 				: [],
-		[parsedJSON, orderedPaths],
+		[parsedJSON, sortedPaths],
 	);
 
 	return (
