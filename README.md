@@ -1,4 +1,5 @@
 A React component to highlight JSON by its keys/paths
+![alt text](https://github.com/sayag11/json-highlighter/blob/master/json-highlighter-image.jpeg?raw=true)
 
 Based on [react-highlight-words.](https://github.com/bvaughn/react-highlight-words)
 
