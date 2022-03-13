@@ -13,7 +13,7 @@ To use it, just provide it with a JSON object and an array of paths  to highligh
 import React from 'react';
 import { JsonHighlighter } from 'json-highlighter';
 
-const App = () => {
+const App = (props) => {
   const json = {
     key1: {
       innerArray: ['string to mark'],
@@ -27,14 +27,16 @@ const App = () => {
     },
   };
 
-  const highlightValues = ['key1.innerArray[0]', 'key2.objectToMark'];
+  const paths = ['key1.innerArray[0]', 'key2.objectToMark'];
 
   return (
     <pre>
       <JsonHighlighter
-      json={json}
-      space={4} 
-      paths={highlightValues} />
+        json={json}
+        space={4} 
+        paths={paths} 
+        {...props} // props for react-highlight-words
+      />
     </pre>
 }
 
