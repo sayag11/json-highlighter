@@ -3,11 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.replacePathsWithMarkers = exports.findChunks = exports.getDeepKeys = exports.parseJson = void 0;
+exports.replacePathsWithMarkers = exports.findChunks = exports.getSortedPaths = exports.parseJson = void 0;
 
 require("core-js/modules/es.regexp.exec.js");
 
 require("core-js/modules/es.string.replace.js");
+
+require("core-js/modules/es.string.includes.js");
+
+require("core-js/modules/es.array.sort.js");
 
 var _lodash = require("lodash");
 
@@ -79,13 +83,26 @@ const getDeepKeys = obj => {
 
   return keys;
 };
+
+const getSortedPaths = (jsonObj, paths) => {
+  const deepKeys = getDeepKeys(jsonObj); // get all deep keys from object (dot notation)
+
+  const formattedPaths = paths.map(path => path.replace(/\[([^\]]+)\]/g, '.$1'));
+  const allKeysExist = formattedPaths.every(path => deepKeys.includes(path));
+
+  if (!allKeysExist) {
+    throw Error("JsonHighlighter error - paths contains a path that does not exist in the object");
+  }
+
+  return formattedPaths.slice().sort((a, b) => deepKeys.indexOf(a) - deepKeys.indexOf(b));
+};
 /**
  * @param space - the space parameter for JSON.stringify
  * @param jsonWithMarkers - the json object with a marker placeholder inside json[path]
  * @returns {function({sanitize?: *, searchWords: *, textToHighlight?: *}): []} - a findChuks callback to be used by Highlighter component */
 
 
-exports.getDeepKeys = getDeepKeys;
+exports.getSortedPaths = getSortedPaths;
 
 const findChunks = (space, jsonWithMarkers) => _ref => {
   let {

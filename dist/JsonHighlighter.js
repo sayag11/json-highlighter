@@ -9,8 +9,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-require("core-js/modules/es.array.sort.js");
-
 var _react = _interopRequireWildcard(require("react"));
 
 var _lodash = require("lodash");
@@ -52,16 +50,13 @@ const JsonHighlighter = _ref => {
 
   const textToHighlight = (0, _react.useMemo)(() => typeof parsedJSON === 'object' ? JSON.stringify(parsedJSON, null, space) : parsedJSON, [parsedJSON, space]); // sort the paths to be in the same order they appear in the json object
 
-  const orderedPaths = (0, _react.useMemo)(() => {
-    const deepKeys = (0, _utils.getDeepKeys)(parsedJSON);
-    return paths.slice().sort((a, b) => deepKeys.indexOf(a) - deepKeys.indexOf(b));
-  }, [paths, parsedJSON]); // replace the values in the provided paths with a marker placeholder
+  const sortedPaths = (0, _react.useMemo)(() => (0, _utils.getSortedPaths)(parsedJSON, paths), [paths, parsedJSON]); // replace the values in the provided paths with a marker placeholder
 
-  const jsonObjWithMarkers = (0, _react.useMemo)(() => typeof parsedJSON === 'object' ? (0, _utils.replacePathsWithMarkers)(parsedJSON, orderedPaths) : {}, [parsedJSON, orderedPaths]); // extract the search words from the paths in the json object
+  const jsonObjWithMarkers = (0, _react.useMemo)(() => typeof parsedJSON === 'object' ? (0, _utils.replacePathsWithMarkers)(parsedJSON, sortedPaths) : {}, [parsedJSON, sortedPaths]); // extract the search words from the paths in the json object
 
-  const searchWords = (0, _react.useMemo)(() => typeof parsedJSON === 'object' ? orderedPaths.map(path => {
+  const searchWords = (0, _react.useMemo)(() => typeof parsedJSON === 'object' ? sortedPaths.map(path => {
     return JSON.stringify((0, _lodash.get)(parsedJSON, path));
-  }) : [], [parsedJSON, orderedPaths]);
+  }) : [], [parsedJSON, sortedPaths]);
   return /*#__PURE__*/_react.default.createElement(_reactHighlightWords.default, _extends({
     textToHighlight: textToHighlight,
     searchWords: searchWords,
