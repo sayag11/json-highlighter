@@ -1,6 +1,6 @@
 {
   "name": "json-highlighter",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "description": "A component to highlight values in JSON text",
   "main": "dist/index.js",
   "source": "src/index.js",
