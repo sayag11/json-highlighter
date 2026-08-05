@@ -50,12 +50,36 @@ And the `JsonHighlighter` will mark all values based on the provided paths.
 |:---|:---|:---:|
 | json | Object | A JSON object or string |
 | space | Number | the space parameter for JSON.stringify for the final textual result. see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify |
-| paths | Array<String> | array of strings - each string represents a path inside the json. e.g: 'foo[0].bar' |
+| paths | Array&lt;String &#124; Array&gt; | array of paths inside the json. Each path is either a string in lodash path syntax (`'foo[0].bar'`, `'foo["bar"]'`) or an array of key segments (`['foo', 0, 'bar']`) |
+
+### Paths
+
+Paths use [lodash path syntax](https://lodash.com/docs/#get), so `'a.b'`, `'a[0].b'` and
+`'a["b"]'` are all valid, as is a top-level index like `'[1].id'` when the json is an array.
+
+Because `'a.b'` always means *"key `b` inside key `a`"*, a key that literally contains a dot
+(or a bracket) has to be given in the array form:
+
+```jsx
+<JsonHighlighter json={{'a.b': 1}} paths={[['a.b']]} />
+```
+
+**Unknown paths are ignored, not fatal.** A path that does not exist in the json is reported
+with `console.error` and skipped; the remaining valid paths still highlight and the JSON still
+renders. This matters when the json arrives asynchronously — on the first render the data is
+usually empty, and every configured path is temporarily unknown.
+
+If two paths overlap, the outer one wins: `paths={['a', 'a.b']}` highlights the whole of `a`.
+Duplicate paths are collapsed.
 
 ## react-highlight-words Props
 
 Relevant props to pass to the inner react-highlight-words component.
 to see all props go to: https://github.com/bvaughn/react-highlight-words
+
+`textToHighlight`, `searchWords` and `findChunks` are computed by this component and cannot be
+overridden. `caseSensitive`, `autoEscape` and `sanitize` have no effect, because matching is done
+by path rather than by text search.
 
 | Property | Type | Description |
 |:---|:---|:---:|
@@ -71,12 +95,14 @@ to see all props go to: https://github.com/bvaughn/react-highlight-words
 
 ## Installation
 ```
-yarn add json-highlighter
+npm i --save json-highlighter
 ```
 
 ```
-npm i --save json-highlighter
+yarn add json-highlighter
 ```
+
+`react` is a peer dependency (`^18 || ^19`) — it is not installed for you.
 
 ## License
 MIT License - fork, modify and use however you want.
