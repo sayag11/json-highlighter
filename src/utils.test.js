@@ -388,6 +388,14 @@ describe('getSortedPaths', () => {
 		expect(sorted).toHaveLength(1);
 		expect(get(json, sorted[0])).toBe(1);
 	});
+
+	it('handles overlapping paths from pathKey collision', () => {
+		const json = {'a': {'b': 1}, 'a b': 2};
+		// 'a b' and 'a', 'b' both map to 'a b' in pathKey.
+		// getDeepPaths returns both. The first gets inserted, the second hits order.has(key).
+		const sorted = getSortedPaths(json, ['a.b', '["a b"]']);
+		expect(sorted).toHaveLength(2);
+	});
 });
 
 /* ------------------------------------------------------------------------- *
@@ -777,5 +785,18 @@ describe('findChunks - in process', () => {
 		const withMarkers = replacePathsWithMarkers(json, [['a']], '@@custom@@');
 		const [chunk] = findChunks(2, withMarkers, '@@custom@@')({searchWords: ['"x"']});
 		expect(JSON.stringify(json, null, 2).slice(chunk.start, chunk.end)).toBe('"x"');
+	});
+
+	it('returns no chunks when str is not a string', () => {
+		expect(findChunks(2, undefined)({searchWords: ['"a"']})).toEqual([]);
+	});
+
+	it('returns pretty unchanged when pad is empty but pretty has newlines', () => {
+		const json = {a: 'line1\nline2'};
+		const marker = createMarker(json);
+		const withMarkers = replacePathsWithMarkers(json, [['a']], marker);
+		// stringified without space will have no indentation (pad is '')
+		const [chunk] = findChunks(undefined, withMarkers, marker)({searchWords: ['"line1\\nline2"']});
+		expect(JSON.stringify(json, null, undefined).slice(chunk.start, chunk.end)).toBe('"line1\\nline2"');
 	});
 });
