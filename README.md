@@ -104,5 +104,16 @@ yarn add json-highlighter
 
 `react` is a peer dependency (`^18 || ^19`) — it is not installed for you.
 
+## Freeing disk space
+
+When working on this repo, dependencies and test coverage can be regenerated (about 105 MB):
+
+```
+rm -rf node_modules coverage   # clean
+npm ci                         # restore
+```
+
+`dist/` is committed, so leave it in place.
+
 ## License
 MIT License - fork, modify and use however you want.
